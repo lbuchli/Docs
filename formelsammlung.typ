@@ -7,6 +7,9 @@
 
 #set enum(tight: true, spacing: 4pt, numbering: n => box(height: 1em, circle(radius: 0.4em, align(center + horizon, text(8pt)[#n]))))
 
+// TODO ugly
+#place(top + left, dx: 24cm, include "unit_circle.typ")
+
 #table(
     columns: (20%, auto),
     [Derivation],
@@ -293,3 +296,4 @@ Some function $f : D -> RR$, where
 )
 
 */
+
