@@ -17,22 +17,25 @@
       in
       {
         packages.default = pkgs.stdenv.mkDerivation {
-          pname = "cheatsheets";
+          pname = "docs";
           version = "0.1.0";
           src = ./.;
 
-          nativeBuildInputs = [ typstWithDeps ];
+          nativeBuildInputs = [
+            typstWithDeps
+            pkgs.tree
+            pkgs.noto-fonts
+          ];
 
           buildPhase = ''
-            for file in cheatsheets/*.typ; do
-                typst compile "$file"
-            done
-            chmod +x generate_listing.sh && ./generate_listing.sh > index.html
+            find content/ -type d -name "_*" -prune -o -type f -name "*.typ" -print0 | xargs -0L1 typst compile --root content/
+            typst compile --features html --format html --input "content=$(tree -J content/)" index.typ
           '';
 
           installPhase = ''
             mkdir -p $out
-            cp cheatsheets/*.pdf index.html $out/
+            find content/ -type d -name "_*" -prune -o -type f -name "*.pdf" -exec cp --parents {} $out \;
+            cp index.html LICENSE-*.txt $out/
           '';
         };
 

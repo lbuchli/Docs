@@ -8,7 +8,7 @@
 #set enum(tight: true, spacing: 4pt, numbering: n => box(height: 1em, circle(radius: 0.4em, align(center + horizon, text(8pt)[#n]))))
 
 // TODO ugly
-#place(top + left, dx: 24cm, include "components/unit_circle.typ")
+#place(top + left, dx: 24cm, include "/_components/unit_circle.typ")
 
 #table(
     columns: (20%, auto),

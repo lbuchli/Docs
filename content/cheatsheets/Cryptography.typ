@@ -43,16 +43,16 @@
 / Confusion: Relation between input and output is complex (non-linear).
 / Diffusion: Changing one bit of input should change many (\~ half) output bits.
 / S-Box: Substitution box, non-linear.
-/ F-Function: $plus.circle$ key part, substitute, permutate.
-/ SP-Network: $plus.circle$ key part, substitute, permutate. Repeat for $n$ rounds.
-/ Feistel Network: Operates on $L$ and $R$ part of input. Apply F-Function to $R$, $plus.circle$ output with $L$. Switch $L$ and $R$. Repeat for $n$ rounds.
+/ F-Function: $plus.o$ key part, substitute, permutate.
+/ SP-Network: $plus.o$ key part, substitute, permutate. Repeat for $n$ rounds.
+/ Feistel Network: Operates on $L$ and $R$ part of input. Apply F-Function to $R$, $plus.o$ output with $L$. Switch $L$ and $R$. Repeat for $n$ rounds.
 
 === Modes
 
 / Electronic Codebook (ECB): Apply cipher block by block. Bad.
-/ Cipher Block Chaining (CBC): $plus.circle$ IV on plaintext, then $plus.circle$ last blocks cipher output.
-/ Output Feedback (OFB): Used by AES. Encrypts IV, $plus.circle$ plaintext. Then encrypt last ciphertext (before plaintext $plus.circle$) on next block.
-/ Counter (CTR): Encrypt Nonce||$n$, where $n$ is the msg index. $plus.circle$ plaintext onto cipher output (one-time-pad like).
+/ Cipher Block Chaining (CBC): $plus.o$ IV on plaintext, then $plus.o$ last blocks cipher output.
+/ Output Feedback (OFB): Used by AES. Encrypts IV, $plus.o$ plaintext. Then encrypt last ciphertext (before plaintext $plus.o$) on next block.
+/ Counter (CTR): Encrypt Nonce||$n$, where $n$ is the msg index. $plus.o$ plaintext onto cipher output (one-time-pad like).
 
 == Stream Cipher
 
