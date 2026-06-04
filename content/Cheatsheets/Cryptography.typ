@@ -1,6 +1,6 @@
 #import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
-#set page(flipped: true, columns: 2, margin: 1cm)
+#set page(flipped: true, columns: 3, margin: 0.6cm)
 #set text(10pt)
 
 #set table(stroke: none)
@@ -11,8 +11,21 @@
 / Semantically secure: IND-CPA is not winnable. Ciphertext does not leak information about plaintext.
 / $(t, epsilon)$-secure: $P("Attacker computing at most t steps succeeds") < epsilon$
 / n-bit security: $(2^n, epsilon)$-secure for a small epsilon
-/ Pseudo-Random Permutation (PRP): looks like a random permutation if key is not known.
-/ Pseudo-Random Number Generator (PRNG): output looks like a random number if key is not known.
+
+= Randomness
+
+/ Event Surprisal: $I(p) = - log_2(p) quad I(1) = 0$
+/ Shannon Entropy: $H(X) = - sum_(x in Omega) p(x) log p(x)$
+/ Pseudo-Random Number Generator (PRNG): output looks random if key is not known. Ops: `init()`, `refresh(r)`, `next(n)`
+/ Pseudo-Random Function (PRF): given input, looks like random output if key is not known. Used for key derivation (*KDF*).
+/ Pseudo-Random Permutation (PRP): given input, looks like a random permutation if key is not known. Bijective, since permutation. Example (indistinguishable): AES.
+/ Prediction Resistance: cannot predict future output of PRNG
+/ Backtracking Resistance: given output, cannot predict predecessing output of PRNG
+/ Entropy Pool: collects events (e.g. mouse movements), should be asked for new entropy once in a while.
+
+=== Examples
+
+/ Fortuna: State: (Key, Counter).
 
 = Channels
 
@@ -20,7 +33,7 @@
 / Authentic Channel: Attacker read and stop message.
 / Secure Channel: Attacker can stop message.
 
-= Encryption
+= Symmetric Encryption
 
 / Indistinguishability (IND): Given two plaintexts and two corresponding ciphertexts, the attacker should not be able to correlate.
 / Nonmalleability (NM): Attacker should not be able to modify the ciphertext in a way that correlates predictably with a modification of the corresponding plaintext.
@@ -54,28 +67,45 @@
 / Output Feedback (OFB): Used by AES. Encrypts IV, $plus.o$ plaintext. Then encrypt last ciphertext (before plaintext $plus.o$) on next block.
 / Counter (CTR): Encrypt Nonce||$n$, where $n$ is the msg index. $plus.o$ plaintext onto cipher output (one-time-pad like).
 
+=== Examples
+
+/ AES: fancy
+
 == Stream Cipher
 
 / Linear Feedback Shift Register (LFSR): Given initial state, taps, generates cycle of states. Goal: long cycles/periods. Limit: $2^n-1$. If taps are known, $n$ consecutive bits determine state. Berlekamp-Massey Algorithm can be used to recover taps.
 / Filtered LFSR: LFSR where output is a non-linear function of the state bits, e.g. AND.
 / Nonlinear Feedback Shift Register (NFSR): Nonlinear feedback function. Problem: hard to compute period.
 
-
 = Hash Functions
 
-/ pre-image resistance: Given the output of a function, it is difficult to determine a possible input that results in that output.
-/ second pre-image resistance: Given the input and output of a function, it is difficult to determine a possible second input that results in the same output.
-/ collision resistance: It is hard to find two inputs of a function that result in the same output.
+/ Preimage Resistance: Given the output of a function, it is difficult to determine a possible input that results in that output.
+/ Second Preimage Resistance: Given the input and output of a function, it is difficult to determine a possible second input that results in the same output.
+/ Collision Resistance: It is hard to find two inputs of a function that result in the same output.
 
 Collision probability: $P = frac(N!, (N-n)!) quad 2^(n/2) "evaluations on average"$
 
-= Authentication
+/ Merkle-Damgård Construction:
+/ Sponge Construction:
+
+/ Length Extension Attack:
+
+= Message Authentication Codes
+
+/ Unforgeability: The attacker can ask for the authentication code of any message. They should not be able to construct an authentication code for a not-yet-asked message.
+
+== Examples
+
+/ HMAC: $H((K' plus.o "opad") || H((K' plus.o "ipad") || m))$, $K' "derived from private key"$, opad: one block of 0x5c, ipad: one block of 0x36. No length extension attacks.
+/ CMAC:
+
+= Asymmetric Encryption
 
 = Surprise Math
 
 == Groups
 
-$compose$ associative, $e$ identity element, $a^(-1) "/" hat(a)$ inverse elements \
+$compose$ associative, $e$ identity element, $a^(-1) slash hat(a)$ inverse elements \
 Abelian/commutative group: $compose$ commutative
 
 $ZZ_m = {0,1,...,m}$ (group under $+$) \
@@ -99,3 +129,9 @@ $(S, +, *)$, where:
 - $(R, +)$ is an abelian group
 - $(R, *)$ is a monoid (group, but no inverses required)
 - Distributivity: $a * (b + c) = a * b + a * c$
+
+== Fields
+
+$(S, +, -, *, div)$, where operations behave like defined on $RR$.
+
+== Elliptic Curves
