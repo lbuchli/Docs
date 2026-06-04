@@ -33,7 +33,7 @@
                     #html.elem("aside", attrs: (class: "menu"))[
                         #html.elem("p", attrs: (class: "menu-label"))[Documents]
                         #html.ul[
-                            #box(dir-listing("/content/", json(bytes(sys.inputs.content)).at(0).contents))
+                            #box(dir-listing("./content/", json(bytes(sys.inputs.content)).at(0).contents))
                         ]
                     ]
                 ]
@@ -42,12 +42,12 @@
                     This website is multi-licensed:
                     - Documents & Content: All summaries, cheatsheets, presentations,
                       and other website content are licensed under the
-                      #link("/LICENSE-CC-BY-SA-4.txt")[Creative Commons
+                      #link("./LICENSE-CC-BY-SA-4.txt")[Creative Commons
                       Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license].
                     - Code & Templates: All Typst source code, templates, scripts, and build
                       configurations (available in the
                       #link("https://github.com/lbuchli/Docs")[repository]) are licensed under the
-                      #link("/LICENSE-GPLv3.txt")[GNU General Public License v3.0].
+                      #link("./LICENSE-GPLv3.txt")[GNU General Public License v3.0].
                 ]
             ]
         ]
