@@ -25,31 +25,31 @@
 
     #html.body[
         #html.elem("section", attrs: (class: "section"))[
-            *Hi!* I'm Lukas Buchli, and this is my collection of various documents.
-        ]
-        #html.elem("section", attrs: (class: "section"))[
-            #html.elem("aside", attrs: (class: "menu"))[
-                #html.elem("p", attrs: (class: "menu-label"))[Documents]
-                #html.ul[
-                    #box(dir-listing("/content/", json(bytes(sys.inputs.content)).at(0).contents))
+            #html.elem("div", attrs: (class: "container"))[
+                #html.elem("div", attrs: (class: "block"))[
+                    *Hi!* I'm Lukas Buchli, and this is my collection of various documents.
+                ]
+                #html.elem("div", attrs: (class: "block"))[
+                    #html.elem("aside", attrs: (class: "menu"))[
+                        #html.elem("p", attrs: (class: "menu-label"))[Documents]
+                        #html.ul[
+                            #box(dir-listing("/content/", json(bytes(sys.inputs.content)).at(0).contents))
+                        ]
+                    ]
+                ]
+                #html.hr()
+                #html.elem("div", attrs: (class: "block content"))[
+                    This website is multi-licensed:
+                    - Documents & Content: All summaries, cheatsheets, presentations,
+                      and other website content are licensed under the
+                      #link("/LICENSE-CC-BY-SA-4.txt")[Creative Commons
+                      Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license].
+                    - Code & Templates: All Typst source code, templates, scripts, and build
+                      configurations (available in the
+                      #link("https://github.com/lbuchli/Docs")[repository]) are licensed under the
+                      #link("/LICENSE-GPLv3.txt")[GNU General Public License v3.0].
                 ]
             ]
-        ]
-        #html.elem("footer", attrs: (class: "footer"))[
-            #html.elem("div", attrs: (class: "content"))[
-                This website is multi-licensed:
-
-                - Documents & Content: All summaries, cheatsheets, presentations,
-                  and other content are licensed under the
-                  #link("/LICENSE-CC-BY-SA-4.txt")[Creative Commons
-                  Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license].
-
-                - Code & Templates: All Typst source code, templates, scripts, and build
-                  configurations (available in the
-                  #link("https://github.com/lbuchli/Docs")[repository]) are licensed under the
-                  #link("/LICENSE-GPLv3.txt")[GNU General Public License v3.0].
-            ]
-
         ]
     ]
 ]
