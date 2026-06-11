@@ -17,7 +17,6 @@
         ]);
         fontsConf = pkgs.makeFontsConf {
             fontDirectories = with pkgs; [
-                nerdfonts
                 noto-fonts
             ];
         };
