@@ -101,6 +101,8 @@ Collision probability: $P = frac(N!, (N-n)!) quad 2^(n/2) "evaluations on averag
 
 = Asymmetric Encryption
 
+TODO RSA short algorithm rundown
+
 = Surprise Math
 
 == Groups

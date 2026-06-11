@@ -8,7 +8,7 @@
 #set enum(tight: true, spacing: 4pt, numbering: n => box(height: 1em, circle(radius: 0.4em, align(center + horizon, text(8pt)[#n]))))
 
 // TODO ugly
-#place(top + left, dx: 24cm, include "/_components/unit_circle.typ")
+#place(top + left, dx: 24cm, dy: 5cm, include "/_components/unit_circle.typ")
 
 #table(
     columns: (20%, auto),
@@ -19,6 +19,7 @@
             $a$, $0$,
             $x$, $1$,
             $f^a$, $a f^(a-1) f'$,
+            $a^f$, $a^f dot.op ln(a) dot.op f'$,
             $f plus.minus g$, $f' plus.minus g'$,
             $f dot.op g$, $f' dot.op g + f dot.op g'$,
             $f / g$, $frac(f' dot.op g - f dot.op g', g^2)$,
@@ -51,6 +52,7 @@
     ),
     [Matrix multiplication],
     [
+        columns = domain, rows = codomain of transformation
         #block($
             (a_(i j)) = A in RR^(r times n),
             (b_(i j)) = B in RR^(n times c),
@@ -58,18 +60,17 @@
         $)
         #stack(dir: ltr,
             diagram(spacing: (4mm, 4mm), {
-                let (r, n, c) = ((0, 0), (1, 0), (2, 0))
-                node(r, $RR^r$)
-                node(n, $RR^n$)
+                let (c, n, r) = ((0, 0), (1, 0), (2, 0))
                 node(c, $RR^c$)
-                edge(r, n, "->", $A$)
-                edge(n, c, "->", $B$)
-                edge(r, c, "->", $C$, bend: -15deg, shift: -5pt)
+                node(n, $RR^n$)
+                node(r, $RR^r$)
+                edge(c, n, "->", $B$)
+                edge(n, r, "->", $A$)
+                edge(c, r, "->", $C = A B$, bend: -15deg, shift: -5pt)
             }),
-            h(1cm),
+            h(0.6cm),
             stack(dir: ttb,
-                $C = A B <=> c_(i j) = sum^n_(k=1) a_(i k) b_(k j)$,
-                v(0.5cm),
+                $ C = A B <=> c_(i j) = sum^n_(k=1) a_(i k) b_(k j) = sum_k a_(i k) b_(k j) $,
                 table(
                     columns: (auto, auto),
                     $(A B) C = A (B C)$,
@@ -132,9 +133,11 @@
         )
     $),
     [Taylor Series],
-    [#block($ sum_(n=0)^infinity frac(f^(n"th")(a), n!) (x - a)^n $)
-    where $f^(n"th")(a)$ is the $n$th derivative of $f$
-    ],
+    stack(dir: ltr,
+        block($ sum_(n=0)^infinity frac(f^(n"th")(a), n!) (x - a)^n $),
+        h(1cm),
+        block[where $f^(n"th")(a)$ is the \ $n$th derivative of $f$]
+    ),
     [Linearization],
     $f(bold(x)) approx f(bold(x)_0) + f'(bold(x)_0) dot.op (bold(x) - bold(x)_0)$,
     [Gradient],
@@ -190,7 +193,7 @@
     $),
     [Quadratic Form],
     block($
-        M in RR^(n times n) quad q_M (bold(v)) = bold(v)^T M bold(v) \
+        M in RR^(n times n) quad q_M (bold(v)) = bold(v)^T M bold(v) = sum_(i j) a_(i j) x_i x_j \
         H = 1/2 (M + M^T) "upholds" forall bold(v) in RR^n .  q_M (bold(v)) = q_H (bold(v)) \
         H "is symmetric"
     $),
@@ -202,15 +205,22 @@
         ) quad
         J_A (x) = M
     $),
-    [Polynomial Quadratic Form],
-    block($
-        q_M (v) = q_M vec(x_1, x_2, ...) = vec(x_1, x_2, ...)^T M vec(x_1, x_2, ...) -> "multiply out"
-    $),
+    [Sigmoid],
+    block($sigma(x) = frac(1, 1+e^(-x))$),
     [CDF from PDF],
-    block($ F(alpha) = integral_(-infinity)^alpha f(t) dif t quad F, f : RR -> [0, 1] $),
+    block($
+        F_X (alpha) = integral_(-infinity)^alpha f_X (t) dif t quad F_X, f_X : RR -> [0, 1] quad
+        F_X (alpha) = P(X(omega) <= alpha)
+
+    $),
+    [Likelihood],
+    block($
+        ell(bold(x)_0\; p) = f_X (x_1\; p) dot.op f_X (x_2 \; p) dot.op ...
+
+    $),
     [Univariate Uniform Distribution],
     block($
-        x ~ "unif"(a, b) \
+        x ~ "unif"(a, b) quad
         f(x) = cases(
             1/(b-a) quad &x in [a, b],
             0 &x < a or x > b,
@@ -229,8 +239,8 @@
         Goal:
         - The first non-zero number is 1 (pivot)
         - Each pivot is strictly to the right of the one above it.
-        - Any column containing a pivot has zeroes everywhere else.
-        - Rows of all zeroes are at the bottom.
+        - Any column containing a pivot has zeros everywhere else.
+        - Rows of all zeros are at the bottom.
 
         Moves:
         - Swap rows
@@ -241,7 +251,7 @@
         + From bottom to top, make all numbers above pivot 0.
         + Read result: if identity matrix, solution is unique. If some row looks like $0 0 0 | c$, no solution. If some row looks like $0 0 0 | 0$, the corresponding variable is 'free'.
     ],
-    [Finding stationary points],
+    [Stationary Points],
     [
         + Solve for $bold(x)_0$ in $gradient f (bold(x)_0) = bold(0)$
     ],
@@ -271,6 +281,9 @@
         & "both, depending on" v &&->&& "saddle point (indefinite)"
         $
     ],
-    table.hline(stroke: 0.5pt),
-    table.cell(colspan: 2)[Platz für Panik]
+    [Maximum Likelihood Principle],
+    [
+        + Calculate the likelihood function $ell(bold(x)_0, p)$ for some samples $bold(x)_0$ and some parameter $p$.
+        + Calculate the maximum of $- ln(ell(bold(x)_0, p))$ via stationary points.
+    ],
 )
