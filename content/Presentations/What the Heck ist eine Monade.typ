@@ -1,4 +1,5 @@
 #import "@preview/presentate:0.2.5": *
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
 
 #set page(paper: "presentation-16-9")
 #set text(size: 24pt, font: "Noto Sans Mono")
@@ -25,7 +26,16 @@
     #show: pause
     `Optional<T>` \
     #show: pause
-    `State<S, T>` \
+    `State<S, T>`
+    #show: pause
+    #only(5)[$->$ #box(baseline: 2.3em)[```
+    struct State<S, T> {
+        run: S -> (S, T)
+    }
+    ```]]
+    // get() -> State<S, S>
+    // set(S) -> State<S, ()>
+    \
     #show: pause
     $->$ Gemeinsamkeit? \
     #show: pause
@@ -103,7 +113,69 @@
 // ]
 
 #slide[
-    = Monaden \ \
-    Operation `join(F<F<T>>) -> F<T>` \
-    `one(T) -> F<T>`
+        #grid(columns: (auto, auto), column-gutter: 1em)[
+        = Monaden \ \
+     ][
+         #only(2)[= `List<T>`]
+         #only(3)[= `Optional<T>`]
+         #only(4)[= `State<S, T>`]
+         \
+     ][
+        `join(F<F<T>>) -> F<T>` \
+        `pure(T) -> F<T>`
+     ][
+         #only(2)[
+            `flatten(List<List<T>>) -> List<T>` \
+            `one(T) -> List<T>`
+         ]
+         #only(3)[
+             #text(22pt)[`join(Optional<Optional<T>>) -> Optional<T>`] \
+             `some(T) -> List<T>`
+         ]
+         #only(4)[
+             #text(22pt)[`then(State<S, State<S, T>>) -> State<S, T>`] \
+             `pure(T) -> State<S, T>`
+         ]
+     ]
 ]
+
+#slide[
+    ```
+    fn then(nested: State<S, State<S, T>>) -> State<S, T> {
+        return State {
+            run = state => {
+                let (new_state, inner) = nested.run(state)
+                return inner.run(new_state)
+            }
+        }
+    }
+    ```
+]
+
+#slide[
+    = Haskell \ \
+    #stack(dir: ltr,
+        ```
+        main = do
+          name <- getLine
+          putStrLine ("Hi " ++ name)
+        ```,
+        [#h(1em)],
+        text(22pt)[
+        #show: pause
+        ```
+        let line1 = State<World, String> {
+          run: w => (w, w.stdin.next_line)
+        }
+        let line2 = name => State<World, ()> {
+          run: w => (w.stdout.append(name), ())
+        }
+        then(map(line1, line2))
+        ```],
+    )
+    #place(center + horizon, dx: -1cm, dy: -3cm, only(2, diagram(
+        edge((0, 0), (2, 0), "-|>", stroke: 5pt + gray, mark-scale: 0.5, bend: 60deg)
+    )))
+]
+
+#slide[]

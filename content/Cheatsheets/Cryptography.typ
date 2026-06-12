@@ -25,7 +25,7 @@
 
 === Examples
 
-/ Fortuna: State: (Key, Counter).
+/ Fortuna: State: (Key, Counter). TODO
 
 = Channels
 
@@ -69,7 +69,7 @@
 
 === Examples
 
-/ AES: fancy
+/ AES: fancy TODO
 
 == Stream Cipher
 
@@ -85,23 +85,38 @@
 
 Collision probability: $P = frac(N!, (N-n)!) quad 2^(n/2) "evaluations on average"$
 
-/ Merkle-Damgård Construction:
-/ Sponge Construction:
-
-/ Length Extension Attack:
+/ Merkle-Damgård Construction: TODO
+/ Sponge Construction: TODO
+/ Length Extension Attack: TODO
 
 = Message Authentication Codes
 
 / Unforgeability: The attacker can ask for the authentication code of any message. They should not be able to construct an authentication code for a not-yet-asked message.
+/ Universal Hashing: Family of hash functions where key selects actual hash function. Used to build a dedicated MAC (one not built from other primitives).
 
 == Examples
 
 / HMAC: $H((K' plus.o "opad") || H((K' plus.o "ipad") || m))$, $K' "derived from private key"$, opad: one block of 0x5c, ipad: one block of 0x36. No length extension attacks.
-/ CMAC:
+/ CMAC: Uses block cipher. Encrypt, $plus.o$ output with next input before encrypting. Last output is tag.
+/ Poly1305: UH used as one-time MAC (new key for every authentication, would leak key otherwise)
+/ Poly1305-AES: (Wegman-Carter MAC): $"MAC"(K_1,K_2, N, M) = "UH"(K_1, M) + "AES"(K_2, N)$ where $N$ is nonce and AES used as PRF.
+
+= Hard Problems
+
+/ Discrete Logarithm Problem (DLP): Given group elements $x = g^k$ and $g$, find $k$. Only hard for specific subgroups, thus generator to be chosen wisely.
+/ Elliptic Curve Discrete Logarithm Problem (ECDLP): Given points $P = k G$ and $G$, find $k$ ($G$ is group generator). Hard for specific curves only.
 
 = Asymmetric Encryption
 
-TODO RSA short algorithm rundown
+/ RSA: Choose $p$, $q$ prime. Modulus is $n = p q$. Group $ZZ_n^*$ size $phi(n) = (p-1)(q-1)$. Choose $e$, $d$ in exponent group $ZZ_phi(n)^*$ s.t. $e d equiv^phi(n) 1$. Choose $x in ZZ_n^*$, define $y = x^e mod n$. Computing $x$ from $y$ is hard unless $d$ is known. Public: $n$, $e$. Secret: $p$, $q$, $d$. *RSA needs OAEP padding to be secure.*
+
+/ ElGamal: Based on DLP. Can be reduced to DDH. Homomorphic.
+
+= Key Exchange
+
+/ Key Encapsulation Mechanism (KEM): One party generates key. It is then wrapped and sent.
+TODO
+/ Diffie-Hellman: TODO
 
 = Surprise Math
 
@@ -137,3 +152,7 @@ $(S, +, *)$, where:
 $(S, +, -, *, div)$, where operations behave like defined on $RR$.
 
 == Elliptic Curves
+
+Form a group using $+$ (opposite of intersection point of line between input points and curve). $𝒪$ is the point at infinity and the neutral element.
+
+/ Weierstrass Curve: ${ (x, y) | x, y in FF, y^2 = x^3 + a x + b }$ for some field $FF$ and some params $a, b in FF$.
