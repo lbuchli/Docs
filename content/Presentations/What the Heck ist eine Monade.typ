@@ -10,7 +10,7 @@
 #slide[
     = What the Heck ist eine Monade? \ \
     Lukas Buchli \
-    04.06.2026
+    03.07.2026
 ]
 
 #slide[]
@@ -130,7 +130,7 @@
          ]
          #only(3)[
              #text(22pt)[`join(Optional<Optional<T>>) -> Optional<T>`] \
-             `some(T) -> List<T>`
+             `some(T) -> Optional<T>`
          ]
          #only(4)[
              #text(22pt)[`then(State<S, State<S, T>>) -> State<S, T>`] \
@@ -141,10 +141,10 @@
 
 #slide[
     ```
-    fn then(nested: State<S, State<S, T>>) -> State<S, T> {
+    fn then(outer: State<S, State<S, T>>) -> State<S, T> {
         return State {
             run = state => {
-                let (new_state, inner) = nested.run(state)
+                let (new_state, inner) = outer.run(state)
                 return inner.run(new_state)
             }
         }
@@ -167,8 +167,8 @@
         let line1 = State<World, String> {
           run: w => (w, w.stdin.next_line)
         }
-        let line2 = name => State<World, ()> {
-          run: w => (w.stdout.append(name), ())
+        let line2 = name => State<World, One> {
+          run: w => (w.stdout.append(name), one)
         }
         then(map(line1, line2))
         ```],

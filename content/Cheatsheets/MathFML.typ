@@ -142,7 +142,7 @@
         block[where $f^(n"th")(a)$ is the \ $n$th derivative of $f$]
     ),
     [Linearization],
-    $f(bold(x)) approx f(bold(x)_0) + f'(bold(x)_0) dot.op (bold(x) - bold(x)_0)$,
+    $f(bold(x)) approx f(bold(x)_0) + J_f (bold(x)_0) dot.op (bold(x) - bold(x)_0)$,
     [Gradient],
     [
         #block($gradient f(x_1, x_2, ...) = (partial / (partial x_1) f, partial / (partial x_2) f, ...)$)
